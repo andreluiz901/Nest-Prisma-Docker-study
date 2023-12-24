@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model comments {
+  message          String   @db.VarChar
+  date_created     DateTime @db.Timestamptz(6)
+  date_last_update DateTime @db.Timestamptz(6)
+  is_read          Boolean  @default(false)
+  id_owner         Int
+  id_post          Int
+  id               Int      @id(map: "comments_pk") @default(autoincrement())
+  posts            posts    @relation(fields: [id_post], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "coments_posts_fk")
+  users            users    @relation(fields: [id_owner], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "coments_users_fk")
+}
+
+model posts {
+  id               Int        @id(map: "posts_pk") @default(autoincrement())
+  date_created     DateTime   @db.Timestamptz(6)
+  message          String     @db.VarChar
+  date_last_update DateTime?  @db.Timestamptz(6)
+  id_creator       Int
+  comments         comments[]
+  users            users      @relation(fields: [id_creator], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "posts_fkk")
+}
+
+model users {
+  id            Int        @id(map: "users_pk") @default(autoincrement())
+  username      String     @db.VarChar
+  password      String     @db.VarChar
+  fullName      String     @db.VarChar
+  email         String     @db.VarChar
+  profile_photo String?    @unique @db.VarChar
+  comments      comments[]
+  posts         posts[]
+}
