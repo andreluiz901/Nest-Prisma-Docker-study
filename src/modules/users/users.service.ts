@@ -1,29 +1,50 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from '@/src/modules/users/dto/create-user.dto';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateUserDto } from '@/src/modules/users/dto/create-user.dto'; //TODO:@
 import { UpdateUserDto } from '@/src/modules/users/dto/update-user.dto';
 import { DatabaseService } from '@/src/modules/database/database.service';
 import { User } from '@/src/modules/users/entities/user.entity';
+import {
+  FindOneByEmailDTO,
+  RulesFindOneByEmail,
+} from './dto/find-one-by-email-user.dto';
+import { SecurityService } from '../security/security.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private database: DatabaseService) {}
+  constructor(
+    private database: DatabaseService,
+    private securityService: SecurityService,
+  ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    if (
-      await this.database.users.findUnique({
-        where: { email: createUserDto.email },
-      })
-    )
-      throw new HttpException('Email inválido', HttpStatus.BAD_REQUEST);
-    await this.database.posts.create({
-      data: {
-        date_created: new Date(),
-        message: 'message',
-        id_creator: 1,
-      },
-    });
+  async create({
+    email,
+    fullName,
+    password,
+    username,
+    profile_photo,
+  }: CreateUserDto) {
+    await this.findOneByEmail({ email, rule: RulesFindOneByEmail.IF_EXISTS });
+
     return this.database.users.create({
-      data: createUserDto,
+      select: {
+        email: true,
+        fullName: true,
+        username: true,
+        profile_photo: true,
+      },
+      data: {
+        email,
+        fullName,
+        username,
+        profile_photo,
+        password: this.securityService.encrypt(password),
+      },
     });
   }
 
@@ -39,6 +60,26 @@ export class UsersService {
 
   async findOne(id: number) {
     return await this.database.users.findUnique({ where: { id } });
+  }
+
+  async findOneByEmail({
+    email,
+    rule,
+  }: FindOneByEmailDTO): Promise<User | undefined> {
+    const responseUser = await this.database.users.findUnique({
+      where: { email },
+    });
+
+    if (rule === RulesFindOneByEmail.IF_NOT_EXISTS) {
+      if (responseUser) {
+        return responseUser;
+      }
+      throw new NotFoundException('Usuário não existe');
+    }
+
+    if (responseUser) {
+      throw new BadRequestException('Email já existe.');
+    }
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
