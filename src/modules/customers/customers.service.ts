@@ -5,14 +5,14 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CustomersService {
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService) {}
 
   create(createCustomerDto: CreateCustomerDto) {
     return 'This action adds a new customer';
   }
 
   findAll() {
-    console.log(this.configService.get<string>('TEST'))
+    console.log(this.configService.get<string>('TEST'));
     return `This action returns all customers`;
   }
 
