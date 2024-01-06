@@ -1,8 +1,8 @@
-import { SomaCalculatorDTO } from '@/src/modules/calculator/dto/soma-calculator.dto';
-import { DividirCalculatorDTO } from '@/src/modules/calculator/dto/dividir-calculator.dto';
+import { SomaCalculatorDTO } from '@/modules/calculator/dto/soma-calculator.dto';
+import { DividirCalculatorDTO } from '@/modules/calculator/dto/dividir-calculator.dto';
 import { BadRequestException } from '@nestjs/common';
-import { SubtrairCalculatorDTO } from '@/src/modules/calculator/dto/subtrair-calculator.dto';
-import { MultiplicarCalculatorDTO } from '@/src/modules/calculator/dto/multiplicar-calculator.dto';
+import { SubtrairCalculatorDTO } from '@/modules/calculator/dto/subtrair-calculator.dto';
+import { MultiplicarCalculatorDTO } from '@/modules/calculator/dto/multiplicar-calculator.dto';
 
 export class CalculatorService {
   soma({ number1, number2 }: SomaCalculatorDTO): number {

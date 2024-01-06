@@ -1,9 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CalculatorService } from '@/src/modules/calculator/calculator.service';
-import { SomaCalculatorDTO } from '@/src/modules/calculator/dto/soma-calculator.dto';
-import { DividirCalculatorDTO } from '@/src/modules/calculator/dto/dividir-calculator.dto';
-import { SubtrairCalculatorDTO } from '@/src/modules/calculator/dto/subtrair-calculator.dto';
-import { MultiplicarCalculatorDTO } from '@/src/modules/calculator/dto/multiplicar-calculator.dto';
+import { CalculatorService } from '@/modules/calculator/calculator.service';
+import { SomaCalculatorDTO } from '@/modules/calculator/dto/soma-calculator.dto';
+import { DividirCalculatorDTO } from '@/modules/calculator/dto/dividir-calculator.dto';
+import { SubtrairCalculatorDTO } from '@/modules/calculator/dto/subtrair-calculator.dto';
+import { MultiplicarCalculatorDTO } from '@/modules/calculator/dto/multiplicar-calculator.dto';
 
 @Controller('calculator')
 export class CalculatorController {

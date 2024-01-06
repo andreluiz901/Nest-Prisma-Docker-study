@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CalculatorController } from '@/src/modules/calculator/calculator.controller';
-import { CalculatorService } from '@/src/modules/calculator/calculator.service';
+import { CalculatorController } from '@/modules/calculator/calculator.controller';
+import { CalculatorService } from '@/modules/calculator/calculator.service';
 
 @Module({
   controllers: [CalculatorController],

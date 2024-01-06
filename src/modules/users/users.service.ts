@@ -5,15 +5,15 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDto } from '@/src/modules/users/dto/create-user.dto'; //TODO:@
-import { UpdateUserDto } from '@/src/modules/users/dto/update-user.dto';
-import { DatabaseService } from '@/src/modules/database/database.service';
-import { User } from '@/src/modules/users/entities/user.entity';
+import { CreateUserDto } from '@/modules/users/dto/create-user.dto'; //TODO:@
+import { UpdateUserDto } from '@/modules/users/dto/update-user.dto';
+import { DatabaseService } from '@/modules/database/database.service';
+import { User } from '@/modules/users/entities/user.entity';
 import {
   FindOneByEmailDTO,
   RulesFindOneByEmail,
-} from './dto/find-one-by-email-user.dto';
-import { SecurityService } from '../security/security.service';
+} from '@/modules/users/dto/find-one-by-email-user.dto';
+import { SecurityService } from '@/modules/security/security.service';
 
 @Injectable()
 export class UsersService {
